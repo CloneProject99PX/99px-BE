@@ -1,6 +1,6 @@
 package com.example.ninetynine.domain.photo.entity;
 
-import com.example.ninetynine.domain.common.entity.Address;
+import com.example.ninetynine.domain.common.entity.Location;
 import com.example.ninetynine.domain.common.entity.Category;
 import com.example.ninetynine.domain.common.entity.Timestamped;
 import com.example.ninetynine.domain.member.entity.Member;
@@ -28,7 +28,7 @@ public class Photo extends Timestamped {
     private String description;
 
     @Column
-    private Address address;
+    private Location location;
 
     @Column
     private Category category;
