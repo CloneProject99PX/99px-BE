@@ -30,6 +30,7 @@ public class Photo extends Timestamped {
     @Column
     private Location location;
 
+    @Enumerated(EnumType.STRING)
     @Column
     private Category category;
 
