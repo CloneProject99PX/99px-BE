@@ -8,11 +8,14 @@ import com.example.ninetynine.domain.member.entity.MemberInfo;
 import com.example.ninetynine.domain.member.repository.MemberInfoRepository;
 import com.example.ninetynine.domain.member.repository.MemberRepository;
 import com.example.ninetynine.global.jwt.JwtUtil;
+import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
 
@@ -43,16 +46,38 @@ public class MemberService {
     }
 
     // 회원가입 onboarding
-    // member email match 필요
     @Transactional
-    public void onboarding(OnboardingRequestDto onboardingRequestDto) {
+    public void onboarding(OnboardingRequestDto onboardingRequestDto, HttpServletRequest request) {
         String firstName = onboardingRequestDto.getFirstName();
         String lastName = onboardingRequestDto.getLastName();
         String userName = onboardingRequestDto.getUserName();
+        String profilePic = onboardingRequestDto.getProfilePic();
+        String email = onboardingRequestDto.getEmail();
+
+//        String token = jwtUtil.resolveToken(request);
+//        Claims claims;
+//
+//        if (token != null) {
+//            if (jwtUtil.validateToken(token)) {
+//                claims = jwtUtil.getUserInfoFromToken(token);
+//            } else {
+//                throw new IllegalArgumentException("Token Error");
+//            }
+//            Member member = memberRepository.findByEmail(claims.getSubject()).orElseThrow(
+//                    () -> new IllegalArgumentException("email이 존재하지 않습니다.")
+//            );
+//
+//            member.update(firstName, lastName, userName);
+//
+//        }
+
+         Member member = (Member) memberRepository.findMemberByEmail(email).orElseThrow(
+                 () -> new IllegalArgumentException("email이 존재하지 않습니다.")
+         );
+
+         member.update(firstName, lastName, userName, profilePic, email);
 
 
-        MemberInfo memberInfo = new MemberInfo(firstName, lastName, userName);
-        memberInfoRepository.save(memberInfo);
     }
 
 

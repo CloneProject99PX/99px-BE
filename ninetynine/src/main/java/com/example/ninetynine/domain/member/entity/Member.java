@@ -1,7 +1,6 @@
 package com.example.ninetynine.domain.member.entity;
 
 import com.example.ninetynine.domain.common.entity.Timestamped;
-import com.example.ninetynine.domain.photo.entity.Photo;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,14 +25,20 @@ public class Member extends Timestamped {
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false)
+    @Column
     private String firstName;
 
-    private Long kakaoId;
+    @Column
+    private String lastName;
 
-    @OneToOne
-    @JoinColumn(name = "memberInfo_id")
-    private MemberInfo memberInfo;
+    @Column
+    private String userName;
+
+    @Column
+    private String profilePic;
+
+    @Column
+    private Long kakaoId;
 
 
     public Member(String email, String password) {
@@ -50,6 +55,14 @@ public class Member extends Timestamped {
     public Member kakaoIdUpdate(Long kakaoId) {
         this.kakaoId = kakaoId;
         return this;
+    }
+
+    public void update(String firstName, String lastName, String userName, String profilePic, String email) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.userName = userName;
+        this.profilePic = profilePic;
+        this.email = email;
     }
 
 }

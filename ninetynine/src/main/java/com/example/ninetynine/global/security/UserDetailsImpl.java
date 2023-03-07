@@ -14,9 +14,12 @@ public class UserDetailsImpl implements UserDetails {
     private final Member member;
     private final String email;
 
-    public UserDetailsImpl(Member member, String email) {
+    private final String password;
+
+    public UserDetailsImpl(Member member, String email, String password) {
         this.member = member;
         this.email = email;
+        this.password = password;
     }
 
     public Member getMember() {
@@ -42,7 +45,7 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public String getPassword() {
-        return null;
+        return this.password;
     }
 
     @Override

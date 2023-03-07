@@ -10,13 +10,15 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@RestController
+@Controller
 @RequiredArgsConstructor
 @RequestMapping("/api")
 public class MemberController {
@@ -33,14 +35,15 @@ public class MemberController {
     }
 
 //    @PostMapping("/auth/email")
+//    @ResponseBody
 //    public String emailSignup(@RequestBody SignupRequestDto signupRequestDto) {
 //        memberService.signup(signupRequestDto);
 //        return "success";
 //    }
 //
-    @PostMapping("/auth/onboarding")
-    public ResponseEntity<?> onboarding(@RequestBody OnboardingRequestDto onboardingRequestDto) {
-        memberService.onboarding(onboardingRequestDto);
+    @PutMapping("/auth/onboarding")
+    public ResponseEntity<?> onboarding(@RequestBody OnboardingRequestDto onboardingRequestDto, HttpServletRequest request) {
+        memberService.onboarding(onboardingRequestDto, request);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
@@ -62,12 +65,19 @@ public class MemberController {
         cookie.setPath("/");
         response.addCookie(cookie);
 
-        return "success";
+        System.out.println("이게 맞나?!");
+
+        return "redirect:/api/signup";
     }
 
-    @GetMapping("/login")
-    public ModelAndView loginPage() {
-        return new ModelAndView("login");
-    }
+//    @GetMapping("/login")
+//    public ModelAndView loginPage() {
+//        return new ModelAndView("login");
+//    }
+//
+//    @GetMapping("/signup")
+//    public ModelAndView signupPage() {
+//        return new ModelAndView("signup");
+//    }
 
 }

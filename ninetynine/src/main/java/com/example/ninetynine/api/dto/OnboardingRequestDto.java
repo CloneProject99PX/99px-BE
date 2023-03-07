@@ -16,5 +16,9 @@ public class OnboardingRequestDto {
 
     private String userName;
 
+    private String profilePic;
+
+    private String email;
+
 
 }
