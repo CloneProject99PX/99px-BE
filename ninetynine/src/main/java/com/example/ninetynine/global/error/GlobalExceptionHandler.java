@@ -30,9 +30,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = {IOException.class})
     protected ResponseEntity<?> handleIOException(IOException e){
-        log.error("handleIOException throws IOException");
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR.value())
-                .body("IOException입니다"+e.getMessage());
+        log.error("handleIOException throws IOException : {}", e.getMessage());
+        return ErrorResponse.of(ErrorCode.SERVER_ERROR);
 
     }
 
