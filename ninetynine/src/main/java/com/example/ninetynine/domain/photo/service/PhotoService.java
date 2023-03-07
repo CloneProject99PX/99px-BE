@@ -13,6 +13,7 @@ import com.example.ninetynine.global.error.ErrorCode;
 import com.example.ninetynine.global.security.UserDetailsImpl;
 import com.example.ninetynine.infra.aws.S3Uploader;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
@@ -25,6 +26,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class PhotoService { // todo statusResponseDto.toResponseEntity() method + status code 만들어서 배포
 
@@ -39,8 +41,9 @@ public class PhotoService { // todo statusResponseDto.toResponseEntity() method 
         Member member = memberRepository.findByEmail(email).orElseThrow(
                 () -> new CustomException(ErrorCode.NOT_FOUND_CLIENT)
         );
+        log.info("photoRequestDto : {}", photoRequestDto.getTitle());
         String imageUrl = s3Uploader.upload(s3image, "image");
-        Photo photo = photoRepository.saveAndFlush(new Photo(photoRequestDto, member, imageUrl));
+        Photo photo = photoRepository.save(new Photo(photoRequestDto, member, imageUrl));
         return StatusResponseDto.builder()
                 .statusCode(HttpStatus.CREATED.value())
                 .data(new PhotoResponseDto(photo))
