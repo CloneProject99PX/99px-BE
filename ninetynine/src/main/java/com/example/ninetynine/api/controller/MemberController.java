@@ -49,9 +49,9 @@ public class MemberController {
 
 
     @PostMapping("/login")
-    public String login(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse response) {
+    public ResponseEntity<?> login(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse response) {
         memberService.login(loginRequestDto, response);
-        return "success";
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     // 카카오 로그인
