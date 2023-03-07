@@ -26,15 +26,17 @@ public enum ErrorCode {
     UNAUTHORIZED_USER(FORBIDDEN,"C-001","접근 권한이 없습니다."),
 
     /* 404 NOT_FOUND : Resource 를 찾을 수 없음 */
-    MEMBER_NOT_FOUND(NOT_FOUND, "D-001","해당 유저 정보를 찾을 수 없습니다"),
+    MEMBER_NOT_FOUND(NOT_FOUND, "D-001","유저 정보를 찾을 수 없습니다"),
     EMPTY_CLIENT(NOT_FOUND,"D-002","등록된 유저가 없습니다."),
     NOT_FOUND_CLIENT(NOT_FOUND,"D-003","해당 유저를 찾을 수 없습니다."),
     NOT_FOUND_PHOTO(NOT_FOUND,"D-004","해당 사진을 찾을 수 없습니다."),
     NOT_FOUND_COMMENT(NOT_FOUND,"D-005","해당 댓글을 찾을 수 없습니다."),
 
     /* 409 CONFLICT : Resource 의 현재 상태와 충돌. 보통 중복된 데이터 존재 */
-    DUPLICATE_RESOURCE(CONFLICT,"E-001","데이터가 이미 존재합니다"),
+    DUPLICATE_RESOURCE(CONFLICT,"E-001","데이터가 이미 존재합니다."),
 
+    /* 500 INTERNAL_SERVER_ERROR : 서버에서 문제 일어남 */
+    SERVER_ERROR(INTERNAL_SERVER_ERROR, "F-001", "입력값을 다시 확인하세요.")
     ;
 
     private final HttpStatus httpStatus;
