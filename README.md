@@ -11,3 +11,6 @@
 + 김병무 - FE : https://github.com/bangmookim
 
 ----------
+
+##Usecase
+![99px-usecase.jpg](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/c9b46537-bbf0-4233-8e23-966e948985cc/99px-usecase.jpg)
