@@ -73,11 +73,10 @@ public class PhotoService { // todo statusResponseDto.toResponseEntity() method 
     }
 
     public StatusResponseDto<?> findPopular(Category category, Pageable pageable) {
-        Slice<Photo> photos = photoRepository.findByCategory(category,pageable);
-        List<PhotoResponseDto> photolist = photos.stream().map(PhotoResponseDto::new).collect(Collectors.toList());
+        Slice<PhotoResponseDto> photos = photoRepository.findByCategory(category,pageable).map(m -> new PhotoResponseDto());
         return StatusResponseDto.builder()
                 .statusCode(HttpStatus.OK.value())
-                .data(photolist)
+                .data(photos)
                 .build();
     }
 }
