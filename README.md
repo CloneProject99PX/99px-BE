@@ -9,6 +9,5 @@
 + 조영준 - BE : https://github.com/choincnp
 + 황지상 - FE H : https://github.com/RyumForCode
 + 김병무 - FE : https://github.com/bangmookim
-+ 신재원 - FE : https://github.com/t3qquq
 
 ----------
