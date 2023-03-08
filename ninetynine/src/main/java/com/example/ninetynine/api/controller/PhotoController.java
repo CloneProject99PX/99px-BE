@@ -36,15 +36,23 @@ public class PhotoController {
 
     //url이 api/popular?category=?&page=?&size=?&sort=view,DESC
     @GetMapping("/popular")
-    public StatusResponseDto<?> findPopular(@RequestParam Category category,
-                                            @PageableDefault(sort = "view", direction = Sort.Direction.DESC, size = 20) Pageable pageable
-                                            ){
-        return photoService.findPopular(category, pageable);
+    public StatusResponseDto<?> findPopular(@PageableDefault(sort = "view", direction = Sort.Direction.DESC, size = 20) Pageable pageable){
+        return photoService.findPopular(pageable);
+    }
+    @GetMapping("/popular/{category}")
+    public StatusResponseDto<?> findPopularByCategory(@PathVariable Category category,
+                                                      @PageableDefault(sort = "view",direction = Sort.Direction.DESC, size = 20) Pageable pageable){
+        return  photoService.findPopularByCategory(pageable, category);
+    }
+
+    @GetMapping("/fresh")
+    public StatusResponseDto<?> findFresh(@PageableDefault Pageable pageable){
+        return photoService.findFresh(pageable);
     }
 
     @PostMapping("/photo/{id}")
     public StatusResponseDto<?> delete(@AuthenticationPrincipal UserDetailsImpl member,
                                        @PathVariable Long id){
-        return photoService.delete(member,id);
+        return photoService.delete(member.getMember(),id);
     }
 }
