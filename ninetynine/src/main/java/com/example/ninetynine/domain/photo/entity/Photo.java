@@ -5,6 +5,7 @@ import com.example.ninetynine.domain.common.entity.Category;
 import com.example.ninetynine.domain.common.entity.Timestamped;
 import com.example.ninetynine.domain.member.entity.Member;
 import com.example.ninetynine.domain.photo.dto.PhotoRequestDto;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -41,8 +42,9 @@ public class Photo extends Timestamped {
 
     private String url;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "memberId")
+    @JsonIgnore
     private Member member;
 
     public Photo(PhotoRequestDto photoRequestDto, Member member, String imageUrl){
