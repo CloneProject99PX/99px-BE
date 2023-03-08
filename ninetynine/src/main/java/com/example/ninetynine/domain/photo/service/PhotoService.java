@@ -10,7 +10,6 @@ import com.example.ninetynine.domain.photo.repository.PhotoRepository;
 import com.example.ninetynine.global.dto.StatusResponseDto;
 import com.example.ninetynine.global.error.CustomException;
 import com.example.ninetynine.global.error.ErrorCode;
-import com.example.ninetynine.global.security.UserDetailsImpl;
 import com.example.ninetynine.infra.aws.S3Uploader;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,8 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -41,7 +38,6 @@ public class PhotoService { // todo statusResponseDto.toResponseEntity() method 
         Member member = memberRepository.findByEmail(email).orElseThrow(
                 () -> new CustomException(ErrorCode.NOT_FOUND_CLIENT)
         );
-        log.info("photoRequestDto : {}", photoRequestDto.getTitle());
         String imageUrl = s3Uploader.upload(s3image, "image");
         Photo photo = photoRepository.save(new Photo(photoRequestDto, member, imageUrl));
         return StatusResponseDto.builder()
@@ -54,7 +50,7 @@ public class PhotoService { // todo statusResponseDto.toResponseEntity() method 
     @Transactional
     public StatusResponseDto<?> read(Long id) {
         Photo photo = photoRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_PHOTO));
-        photoRepository.updateView(id);
+        photoRepository.updateViewAndFlush(id);
         return StatusResponseDto.builder()
                 .statusCode(HttpStatus.OK.value())
                 .data(new PhotoResponseDto(photo))
@@ -62,9 +58,10 @@ public class PhotoService { // todo statusResponseDto.toResponseEntity() method 
     }
 
 
-    public StatusResponseDto<?> delete(UserDetailsImpl member, Long id) {
+    @Transactional
+    public StatusResponseDto<?> delete(Member member, Long id) {
         Photo photo = photoRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_PHOTO));
-        if (!photo.getMember().equals(member.getMember())) throw new CustomException(ErrorCode.INVALID_REQUEST);
+        if (!photo.getMember().getEmail().equals(member.getEmail())) throw new CustomException(ErrorCode.INVALID_REQUEST);
         else {
             s3Uploader.delete(photo.getUrl());
             photoRepository.delete(photo);
@@ -75,11 +72,33 @@ public class PhotoService { // todo statusResponseDto.toResponseEntity() method 
                 .build();
     }
 
-    public StatusResponseDto<?> findPopular(Category category, Pageable pageable) {
-        Slice<PhotoResponseDto> photos = photoRepository.findByCategory(category,pageable).map(m -> new PhotoResponseDto());
+    @Transactional(readOnly = true)
+    public StatusResponseDto<?> findPopular(Pageable pageable) {
+        Slice<PhotoResponseDto> photos = photoRepository.findSliceByOrderByViewDesc(pageable).map(PhotoResponseDto::new);
         return StatusResponseDto.builder()
+                .msg("좋아요 순으로 배치됩니다.")
                 .statusCode(HttpStatus.OK.value())
                 .data(photos)
+                .build();
+    }
+
+    @Transactional(readOnly = true)
+    public StatusResponseDto<?> findFresh(Pageable pageable) {
+        Slice<PhotoResponseDto> sliceBy = photoRepository.findSliceByOrderByCreatedAtDesc(pageable).map(PhotoResponseDto::new);
+        return StatusResponseDto.builder()
+                .msg("생성 순으로 배치합니다.")
+                .statusCode(HttpStatus.OK.value())
+                .data(sliceBy)
+                .build();
+    }
+
+    @Transactional(readOnly = true)
+    public StatusResponseDto<?> findPopularByCategory(Pageable pageable, Category category) {
+        Slice<PhotoResponseDto> sliceBy = photoRepository.findSliceByCategoryOrderByViewDesc(pageable, category).map(PhotoResponseDto::new);
+        return StatusResponseDto.builder()
+                .msg("카테고리와 좋아요 순으로 배치합니다.")
+                .statusCode(HttpStatus.OK.value())
+                .data(sliceBy)
                 .build();
     }
 }
