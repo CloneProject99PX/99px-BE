@@ -1,5 +1,6 @@
 package com.example.ninetynine.api.controller;
 
+import com.amazonaws.Response;
 import com.example.ninetynine.api.dto.LoginRequestDto;
 import com.example.ninetynine.api.dto.OnboardingRequestDto;
 import com.example.ninetynine.api.dto.SignupRequestDto;
@@ -17,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 @Controller
 @RequiredArgsConstructor
@@ -54,6 +56,12 @@ public class MemberController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
+    @GetMapping("/logout")
+    public ResponseEntity<?> logoout(HttpSession session) {
+        session.invalidate();
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
     // 카카오 로그인
     @GetMapping("/kakao/callback")
     public String kakaoLogin(@RequestParam String code, HttpServletResponse response) throws JsonProcessingException {
@@ -70,14 +78,5 @@ public class MemberController {
         return "redirect:/api/signup";
     }
 
-//    @GetMapping("/login")
-//    public ModelAndView loginPage() {
-//        return new ModelAndView("login");
-//    }
-//
-//    @GetMapping("/signup")
-//    public ModelAndView signupPage() {
-//        return new ModelAndView("signup");
-//    }
 
 }
