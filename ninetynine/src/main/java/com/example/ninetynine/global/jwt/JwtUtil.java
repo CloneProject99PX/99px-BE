@@ -1,7 +1,6 @@
 package com.example.ninetynine.global.jwt;
 
 
-//import com.example.ninetynine.domain.member.entity.UserRoleEnum;
 import com.example.ninetynine.global.security.UserDetailsServiceImpl;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;

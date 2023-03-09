@@ -1,6 +1,5 @@
 package com.example.ninetynine.api.controller;
 
-import com.amazonaws.Response;
 import com.example.ninetynine.api.dto.LoginRequestDto;
 import com.example.ninetynine.api.dto.OnboardingRequestDto;
 import com.example.ninetynine.api.dto.SignupRequestDto;
@@ -13,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -36,29 +34,15 @@ public class MemberController {
         return ResponseEntity.status(HttpStatus.OK).body(signupRequestDto.getEmail());
     }
 
-//    @PostMapping("/auth/email")
-//    @ResponseBody
-//    public String emailSignup(@RequestBody SignupRequestDto signupRequestDto) {
-//        memberService.signup(signupRequestDto);
-//        return "success";
-//    }
-//
     @PutMapping("/auth/onboarding")
     public ResponseEntity<?> onboarding(@RequestBody OnboardingRequestDto onboardingRequestDto, HttpServletRequest request) {
         memberService.onboarding(onboardingRequestDto, request);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse response) {
         memberService.login(loginRequestDto, response);
-        return ResponseEntity.status(HttpStatus.OK).build();
-    }
-
-    @GetMapping("/logout")
-    public ResponseEntity<?> logoout(HttpSession session) {
-        session.invalidate();
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
@@ -72,8 +56,6 @@ public class MemberController {
         Cookie cookie = new Cookie(JwtUtil.AUTHORIZATION_HEADER, createToken.substring(7));
         cookie.setPath("/");
         response.addCookie(cookie);
-
-        System.out.println("이게 맞나?!");
 
         return "redirect:/api/signup";
     }
