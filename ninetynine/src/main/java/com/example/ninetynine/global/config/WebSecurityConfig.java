@@ -47,6 +47,8 @@ public class WebSecurityConfig{
 
         // 기본 설정인 Session 방식은 사용하지 않고 JWT 방식을 사용하기 위한 설정
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        
+        http.headers().xssProtection().and().contentSecurityPolicy("script-src 'self'");
 
         http.exceptionHandling().accessDeniedPage("/api/user/login");
 
@@ -55,7 +57,6 @@ public class WebSecurityConfig{
                 .and().cors()
                 // JWT 인증/인가를 사용하기 위한 설정
                 .and().addFilterBefore(new JwtAuthFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
-
 
         return http.build();
     }
@@ -73,5 +74,4 @@ public class WebSecurityConfig{
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
-
 }
