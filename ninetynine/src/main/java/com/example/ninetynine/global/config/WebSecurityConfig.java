@@ -47,20 +47,9 @@ public class WebSecurityConfig{
 
         // 기본 설정인 Session 방식은 사용하지 않고 JWT 방식을 사용하기 위한 설정
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-
+        
         http.headers().xssProtection().and().contentSecurityPolicy("script-src 'self'");
 
-
-//        http.authorizeRequests().antMatchers("/api/user/**").permitAll() 해당 경로에 대해서는 인증이 필요하다
-//                .antMatchers("/api/search").permitAll()
-//                .antMatchers("/api/shop").permitAll()
-//                .anyRequest().authenticated()  anyRequest로 인해 인증이 필요없는 것들
-//                // JWT 인증/인가를 사용하기 위한 설정
-//                .and().addFilterBefore(new JwtAuthFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
-//
-//
-//        http.formLogin().loginPage("/api/user/login-page").permitAll();
-//
         http.exceptionHandling().accessDeniedPage("/api/user/login");
 
         http.authorizeRequests().antMatchers("/api/**").permitAll()

@@ -4,13 +4,9 @@ import com.example.ninetynine.api.dto.LoginRequestDto;
 import com.example.ninetynine.api.dto.OnboardingRequestDto;
 import com.example.ninetynine.api.dto.SignupRequestDto;
 import com.example.ninetynine.domain.member.entity.Member;
-import com.example.ninetynine.domain.member.entity.MemberInfo;
-import com.example.ninetynine.domain.member.repository.MemberInfoRepository;
 import com.example.ninetynine.domain.member.repository.MemberRepository;
 import com.example.ninetynine.global.jwt.JwtUtil;
-import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,7 +20,6 @@ import java.util.Optional;
 public class MemberService {
 
     private final MemberRepository memberRepository;
-    private final MemberInfoRepository memberInfoRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
 
@@ -54,29 +49,11 @@ public class MemberService {
         String profilePic = onboardingRequestDto.getProfilePic();
         String email = onboardingRequestDto.getEmail();
 
-//        String token = jwtUtil.resolveToken(request);
-//        Claims claims;
-//
-//        if (token != null) {
-//            if (jwtUtil.validateToken(token)) {
-//                claims = jwtUtil.getUserInfoFromToken(token);
-//            } else {
-//                throw new IllegalArgumentException("Token Error");
-//            }
-//            Member member = memberRepository.findByEmail(claims.getSubject()).orElseThrow(
-//                    () -> new IllegalArgumentException("email이 존재하지 않습니다.")
-//            );
-//
-//            member.update(firstName, lastName, userName);
-//
-//        }
-
          Member member = (Member) memberRepository.findMemberByEmail(email).orElseThrow(
                  () -> new IllegalArgumentException("email이 존재하지 않습니다.")
          );
 
          member.update(firstName, lastName, userName, profilePic, email);
-
 
     }
 
