@@ -29,5 +29,5 @@ public enum Category {
     Underwater,
     Urban_Exploration,
     Wedding,
-    OTHER
+    Other   
 }
