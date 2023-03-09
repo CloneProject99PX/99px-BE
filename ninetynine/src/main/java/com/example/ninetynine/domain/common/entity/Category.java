@@ -1,4 +1,33 @@
 package com.example.ninetynine.domain.common.entity;
 
 public enum Category {
+    Abstract,
+    Aerial,
+    Animals,
+    Black_and_White,
+    Celebrities,
+    City_and_Architecture,
+    Commercial,
+    Concert,
+    Family,
+    Fashion,
+    Food,
+    FindArt,
+    Film,
+    Journalism,
+    Landscapes,
+    Macro,
+    Nature,
+    Night,
+    People,
+    Performing_Arts,
+    Sport,
+    Still_Life,
+    Street,
+    Transportation,
+    Travel,
+    Underwater,
+    Urban_Exploration,
+    Wedding,
+    Other
 }

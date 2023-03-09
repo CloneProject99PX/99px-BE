@@ -1,6 +1,6 @@
 package com.example.ninetynine.domain.common.entity;
 
-public enum Address {
+public enum Location {
 
     SEOUL,
 
