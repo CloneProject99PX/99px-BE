@@ -34,11 +34,11 @@ public class PhotoController {
         return photoService.read(id);
     }
 
-    //url이 api/popular?category=?&page=?&size=?&sort=view,DESC
     @GetMapping("/popular")
     public StatusResponseDto<?> findPopular(@PageableDefault(sort = "view", direction = Sort.Direction.DESC, size = 20) Pageable pageable){
         return photoService.findPopular(pageable);
     }
+
     @GetMapping("/popular/{category}")
     public StatusResponseDto<?> findPopularByCategory(@PathVariable Category category,
                                                       @PageableDefault(sort = "view",direction = Sort.Direction.DESC, size = 20) Pageable pageable){
