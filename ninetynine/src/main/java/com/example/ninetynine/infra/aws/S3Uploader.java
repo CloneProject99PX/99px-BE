@@ -19,6 +19,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
 @Slf4j
@@ -83,9 +85,10 @@ public class S3Uploader {
         return Optional.empty();
     }
 
-    public StatusResponseDto delete(String filePath){ // todo 테스트 해보기
+    public StatusResponseDto delete(String filePath){
         try{
-            amazonS3Client.deleteObject(new DeleteObjectRequest(bucket,filePath));
+            String filename = URLDecoder.decode(filePath.substring(45),StandardCharsets.UTF_8);
+            amazonS3Client.deleteObject(new DeleteObjectRequest(bucket, filename));
         } catch (AmazonS3Exception e){
             e.printStackTrace();
         } catch (SdkClientException e){
